@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "83535257372",
+    "project_id": "dns-test-7ec30",
+    "storage_bucket": "dns-test-7ec30.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83535257372:android:1990bdc6ed77dceea824d9",
+        "android_client_info": {
+          "package_name": "com.example.dnstest.dns_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDExl6eKP_xbB-tEFqPuExuF5QkOHrg-cQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
