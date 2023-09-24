@@ -24,14 +24,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _cubit = HomePageCubit(context.read())..init();
-    log("INITSTATE");
   }
 
-  @override
-  void deactivate() {
-    _cubit.close();
-    super.deactivate();
-  }
 
   @override
   Widget build(BuildContext context) {
