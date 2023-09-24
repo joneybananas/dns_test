@@ -1,3 +1,4 @@
+import 'package:dns_test/common_widgets/snacbars.dart';
 import 'package:dns_test/registration/bloc/registration_cubit.dart';
 import 'package:dns_test/registration/ui/widgets/email_input.dart';
 import 'package:dns_test/registration/ui/widgets/password_imput.dart';
@@ -24,20 +25,34 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RegistrationCubit>(
-      create: (context) => _cubit,
+    return BlocProvider.value(
+      value: _cubit,
       child: Scaffold(
         appBar: AppBar(),
-        body: Column(
-          children: [
-            Text('registrat'),
-            RegistrationEmailInput(),
-            RegistrationPasswordInput(),
-            ElevatedButton(
-              onPressed: _cubit.register,
-              child: Text('Зарегестрироваться'),
+        body: BlocConsumer<RegistrationCubit, RegistrationState>(
+          bloc: _cubit,
+          listener: (context, state) {
+            if (state.errorMessage.isNotEmpty) {
+              showErrorSnackBar(context, state.errorMessage);
+            }
+          },
+          listenWhen: (previous, current) => previous.errorMessage != current.errorMessage,
+          builder: (context, state) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                const Text('Регестрация'),
+                const RegistrationEmailInput(),
+                const SizedBox(height: 8),
+                const RegistrationPasswordInput(),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: _cubit.state.isValid ? _cubit.register : null,
+                  child: const Text('Зарегестрироваться'),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

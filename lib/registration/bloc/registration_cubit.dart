@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dns_test/registration/domain/registration_service.dart';
-import 'package:meta/meta.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 part 'registration_state.dart';
 
@@ -13,6 +13,11 @@ class RegistrationCubit extends Cubit<RegistrationState> {
   void passwordChange(String? value) => emit(state.copy(password: value));
 
   Future<void> register() async {
-    final q = registrationService.register(state.email, state.password);
+    try {
+      final q = await registrationService.register(state.email, state.password);
+    } on FirebaseAuthException catch (ex) {
+      emit(state.copy(errorMessage: ex.message));
+      emit(state.copy(errorMessage: ''));
+    }
   }
 }

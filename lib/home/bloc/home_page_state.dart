@@ -2,20 +2,21 @@ part of 'home_page_cubit.dart';
 
 class HomePageState {
   final bool isLoading;
-  final List<Task> tasks;
+
   final Stream<List<Task>> taskStream;
+  final String errorMessage;
 
   HomePageState(
-      {this.isLoading = true, this.tasks = const [], this.taskStream = const Stream.empty()});
+      {this.isLoading = true, this.taskStream = const Stream.empty(), this.errorMessage = '',});
 
   HomePageState copy({
     bool? isLoading,
-    List<Task>? tasks,
     Stream<List<Task>>? taskStream,
+    String? errorMessage,
   }) =>
       HomePageState(
         isLoading: isLoading ?? this.isLoading,
-        tasks: tasks ?? this.tasks,
         taskStream: taskStream ?? this.taskStream,
+        errorMessage: errorMessage ?? this.errorMessage,
       );
 }

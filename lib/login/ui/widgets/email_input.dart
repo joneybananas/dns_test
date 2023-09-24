@@ -12,10 +12,12 @@ class LoginEmailInput extends StatelessWidget {
     return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
         return TextFormField(
+          autovalidateMode: AutovalidateMode.always,
           initialValue: state.email,
-          decoration: InputDecoration(
+          validator: (value) => _valid(value) ? null : '',
+          decoration: const InputDecoration(
             hintText: 'введите email',
-            // labelText: Strings.loginEmailLabel,
+            errorStyle: TextStyle(height: 0),
             contentPadding: EdgeInsets.zero,
           ),
           textInputAction: TextInputAction.next,
@@ -23,5 +25,10 @@ class LoginEmailInput extends StatelessWidget {
         );
       },
     );
+  }
+
+  bool _valid(String? value) {
+    return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(value ?? '');
   }
 }

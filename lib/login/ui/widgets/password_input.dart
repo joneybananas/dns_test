@@ -13,9 +13,8 @@ class PasswordFieldWidget extends StatelessWidget {
       builder: (context, state) {
         return TextFormField(
           initialValue: state.email,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'введите пароль',
-            // labelText: Strings.loginEmailLabel,
             contentPadding: EdgeInsets.zero,
           ),
           textInputAction: TextInputAction.next,

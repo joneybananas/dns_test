@@ -1,10 +1,13 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dns_test/home/data/task_dto.dart';
+import 'package:home_widget/home_widget.dart';
 
 class TaskRepository {
   final FirebaseFirestore firestore;
+  final String androidWidgetName = 'NewAppWidget';
 
   TaskRepository(this.firestore);
 
@@ -24,17 +27,13 @@ class TaskRepository {
   Future<void> updateTask(Task task) async {
     try {
       await firestore.collection('task').doc(task.id).update(task.toMap());
-    } catch (e) {
-      print(e);
-    }
+    } catch (_) {}
   }
 
   Future<void> deleteTask(String id) async {
     try {
       await firestore.collection('task').doc(id).delete();
-    } catch (e) {
-      print(e);
-    }
+    } catch (_) {}
   }
 
   Future<Task?> getTask(String id) async {
@@ -52,7 +51,7 @@ class TaskRepository {
     }).toList();
   }
 
-  Stream<List<Task>> getTasksStream() {
+  Stream<List<Task>> getTaskStream() {
     return firestore
         .collection('task')
         .orderBy('creationDate', descending: true)
@@ -61,6 +60,11 @@ class TaskRepository {
       return snapshot.docs.map((doc) {
         return Task.fromMap(doc.data(), doc.id);
       }).toList();
-    });
+    })
+      ..listen((event) {
+        log(event.toString());
+        HomeWidget.saveWidgetData<String>('task_list', jsonEncode(tasksToJson(event)))
+            .then((value) => HomeWidget.updateWidget(androidName: androidWidgetName));
+      });
   }
 }

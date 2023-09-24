@@ -1,13 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dns_test/utils.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'task_dto.g.dart';
 
 enum TaskStatus { open, inProgress, done }
 
+@JsonSerializable()
 class Task {
   final String id;
   final String name;
   final String description;
-
+  @JsonKey(fromJson: _intToTaskStatus, toJson: _taskStatusToInt)
   final TaskStatus taskStatus;
+  @TimestampConverter()
   final DateTime creationDate;
 
   const Task({
@@ -23,8 +27,16 @@ class Task {
       'name': name,
       'description': description,
       'taskStatus': taskStatus.index,
-      'creationDate': Timestamp.fromDate(creationDate),
+      'creationDate': creationDate.millisecondsSinceEpoch,
     };
+  }
+
+  factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TaskToJson(this);
+
+  List<Map<String, dynamic>> tasksToJson(List<Task> tasks) {
+    return tasks.map((task) => task.toJson()).toList();
   }
 
   factory Task.fromMap(Map<String, dynamic> map, String id) {
@@ -33,7 +45,7 @@ class Task {
       name: map['name'],
       description: map['description'],
       taskStatus: TaskStatus.values[map['taskStatus']],
-      creationDate: (map['creationDate'] as Timestamp).toDate(),
+      creationDate: DateTime.fromMillisecondsSinceEpoch(map['creationDate'] as int),
     );
   }
   factory Task.fromTaskWithNewStatus(Task task, TaskStatus newStatus) {
@@ -45,4 +57,16 @@ class Task {
       taskStatus: newStatus,
     );
   }
+}
+
+int _taskStatusToInt(TaskStatus status) => status.index;
+
+TaskStatus _intToTaskStatus(int index) => TaskStatus.values[index];
+
+List<Map<String, dynamic>> tasksToJson(List<Task> tasks) {
+  return tasks.map((task) => task.toJson()).toList();
+}
+
+List<Task> tasksFromJson(List<Map<String, dynamic>> jsonList) {
+  return jsonList.map(Task.fromJson).toList();
 }

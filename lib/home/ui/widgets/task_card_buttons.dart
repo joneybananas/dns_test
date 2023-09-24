@@ -44,17 +44,17 @@ Future<bool?> showDeleteConfirmationDialog(BuildContext context) {
     barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Подтверждение'),
-        content: Text('Вы действительно хотите удалить этот элемент?'),
+        title: const Text('Подтверждение'),
+        content: const Text('Вы действительно хотите удалить этот элемент?'),
         actions: <Widget>[
           TextButton(
-            child: Text('Отмена'),
+            child: const Text('Отмена'),
             onPressed: () {
               Navigator.of(context).pop(false);
             },
           ),
           TextButton(
-            child: Text('Удалить'),
+            child: const Text('Удалить'),
             onPressed: () {
               Navigator.of(context).pop(true);
             },

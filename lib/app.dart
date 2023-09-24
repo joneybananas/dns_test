@@ -7,6 +7,7 @@ import 'package:dns_test/login/domain/login_service.dart';
 import 'package:dns_test/login/ui/login_page.dart';
 import 'package:dns_test/registration/domain/registration_service.dart';
 import 'package:dns_test/splash.dart';
+import 'package:dns_test/task/domain/task_card_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +29,7 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     _navigatorKey = GlobalKey<NavigatorState>();
-    widget._auth.authStateChanges().listen((event) => _handleAuth(event));
+    widget._auth.authStateChanges().listen(_handleAuth);
     if (widget._auth.currentUser != null) {
       _navigateToHome();
     }
@@ -56,6 +57,7 @@ class _AppState extends State<App> {
               create: (context) => LoginRepository(widget._auth),
             ),
             RepositoryProvider(create: (_) => TaskRepository(widget.db)),
+            RepositoryProvider(create: (_) => TaskCardRepository(widget.db)),
           ],
           child: child!,
         );
@@ -74,7 +76,7 @@ class _AppState extends State<App> {
 
   Future<void> _navigateToHome() async {
     log('11');
-    await _navigator?.pushAndRemoveUntil(HomePage.route(), (route) => false);
+    await _navigator?.pushAndRemoveUntil(HomePage.route(key: UniqueKey()), (route) => false);
   }
 
   void _navigateToLogin() {

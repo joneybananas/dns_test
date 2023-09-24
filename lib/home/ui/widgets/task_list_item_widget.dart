@@ -1,6 +1,7 @@
 import 'package:dns_test/home/data/task_dto.dart';
 import 'package:dns_test/home/ui/widgets/task_card_buttons.dart';
 import 'package:dns_test/home/ui/widgets/task_status_label.dart';
+import 'package:dns_test/task/ui/task_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -10,8 +11,9 @@ class TaskListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      Card(
+    return GestureDetector(
+      onTap: () => _onCardTap(context),
+      child: Card(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
@@ -54,6 +56,10 @@ class TaskListItemWidget extends StatelessWidget {
           ),
         ),
       ),
-    ]);
+    );
+  }
+
+  void _onCardTap(BuildContext context) {
+    Navigator.of(context).push(TaskPage.route(task.id));
   }
 }
