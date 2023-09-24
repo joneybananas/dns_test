@@ -14,7 +14,6 @@ class HomePageCubit extends Cubit<HomePageState> {
   HomePageCubit(this._taskRep) : super(HomePageState());
 
   Future<void> init() async {
-    log('INIT');
     emit(state.copy(isLoading: true));
     try {
       final taskSteam = _taskRep.getTaskStream();
