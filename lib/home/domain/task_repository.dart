@@ -44,7 +44,6 @@ class TaskRepository {
   }
 
   Future<List<Task>> getTasks() async {
-    log('sus');
     final querySnapshot = await firestore.collection('task').get();
     return querySnapshot.docs.map((doc) {
       return Task.fromMap(doc.data(), doc.id);
@@ -62,7 +61,6 @@ class TaskRepository {
       }).toList();
     })
       ..listen((event) {
-        log(event.toString());
         HomeWidget.saveWidgetData<String>('task_list', jsonEncode(tasksToJson(event)))
             .then((value) => HomeWidget.updateWidget(androidName: androidWidgetName));
       });

@@ -26,7 +26,6 @@ class _HomePageState extends State<HomePage> {
     _cubit = HomePageCubit(context.read())..init();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(

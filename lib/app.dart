@@ -68,19 +68,16 @@ class _AppState extends State<App> {
   void _handleAuth(User? user) {
     if (user != null) {
       _navigateToHome();
-      log('123');
       return;
     }
     _navigateToLogin();
   }
 
   Future<void> _navigateToHome() async {
-    log('11');
     await _navigator?.pushAndRemoveUntil(HomePage.route(key: UniqueKey()), (route) => false);
   }
 
   void _navigateToLogin() {
-    log('22');
     _navigator?.pushAndRemoveUntil(LoginPage.route(), (route) => false);
   }
 }

@@ -17,12 +17,9 @@ class HomePageCubit extends Cubit<HomePageState> {
     emit(state.copy(isLoading: true));
     try {
       final taskSteam = _taskRep.getTaskStream();
-      log(taskSteam.toString());
       emit(state.copy(taskStream: taskSteam, isLoading: false));
-      log('WTF2');
     } on FirebaseException catch (ex) {
       emit(state.copy(errorMessage: ex.message));
-      log('ERROR');
       emit(state.copy(errorMessage: ''));
     }
   }
